@@ -3,13 +3,13 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Button } from '@/shared/ui/button';
-import { TrendingUp, BookOpen, PenTool, Users } from 'lucide-react';
+import { TrendingUp, BookOpen, PenTool, Users, LogOut } from 'lucide-react';
 import { ArticleFeed } from '@/features/article/components/ArticleFeed';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 import { useEffect } from 'react';
 
 export default function LandingPage() {
-  const { user, isAuthenticated, checkAuth } = useAuthStore();
+  const { user, isAuthenticated, checkAuth, logout } = useAuthStore();
   
   useEffect(() => {
     checkAuth();
@@ -48,6 +48,13 @@ export default function LandingPage() {
                 {user.role === 'ADMIN' && (
                   <Link href="/admin/dashboard" className="text-sm font-medium text-brand-primary hover:underline">Dashboard</Link>
                 )}
+                <button 
+                  onClick={() => logout()}
+                  className="text-sm font-medium text-zinc-500 hover:text-red-500 transition-colors flex items-center gap-1"
+                >
+                  <LogOut size={16} />
+                  <span>Logout</span>
+                </button>
               </div>
             ) : (
               <>

@@ -1,27 +1,29 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/features/auth/store/useAuthStore';
 
 export function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading, checkAuth } = useAuthStore();
+  const { isAuthenticated, checkAuth } = useAuthStore();
+  const [isChecking, setIsChecking] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
     const initAuth = async () => {
       await checkAuth();
+      setIsChecking(false);
     };
     initAuth();
   }, [checkAuth]);
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    if (!isChecking && !isAuthenticated) {
       router.push('/auth/login');
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [isAuthenticated, isChecking, router]);
 
-  if (isLoading) {
+  if (isChecking) {
     return (
       <div className="container flex justify-center items-center" style={{ height: '100vh' }}>
         <div className="skeleton" style={{ width: '40px', height: '40px', borderRadius: '50%' }}></div>
@@ -33,24 +35,29 @@ export function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 export function AdminRoute({ children }: { children: React.ReactNode }) {
-  const { user, isAuthenticated, isLoading, checkAuth } = useAuthStore();
+  const { user, isAuthenticated, checkAuth } = useAuthStore();
+  const [isChecking, setIsChecking] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    checkAuth();
+    const initAuth = async () => {
+      await checkAuth();
+      setIsChecking(false);
+    };
+    initAuth();
   }, [checkAuth]);
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isChecking) {
       if (!isAuthenticated) {
         router.push('/auth/login');
       } else if (user?.role !== 'ADMIN') {
         router.push('/');
       }
     }
-  }, [isAuthenticated, user, isLoading, router]);
+  }, [isAuthenticated, user, isChecking, router]);
 
-  if (isLoading) {
+  if (isChecking) {
     return (
       <div className="container flex justify-center items-center" style={{ height: '100vh' }}>
         <div className="skeleton" style={{ width: '100px', height: '20px' }}></div>

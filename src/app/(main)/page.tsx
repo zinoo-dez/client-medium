@@ -41,7 +41,7 @@ export default function LandingPage() {
           <nav className="hidden md:flex items-center gap-8">
             <Link href="/our-story" className="text-sm font-medium hover:text-brand-primary transition-colors">Our Story</Link>
             <Link href="/membership" className="text-sm font-medium hover:text-brand-primary transition-colors">Membership</Link>
-            <Link href="/write" className="text-sm font-medium hover:text-brand-primary transition-colors">Write</Link>
+            <Link href="/new-story" className="text-sm font-medium hover:text-brand-primary transition-colors">Write</Link>
             {isAuthenticated && user ? (
               <div className="flex items-center gap-4">
                 <span className="text-sm font-bold text-zinc-900 border border-zinc-200 px-4 py-2 rounded-full">{user.username}</span>

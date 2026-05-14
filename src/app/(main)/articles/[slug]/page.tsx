@@ -10,6 +10,7 @@ import { Button } from '@/shared/ui/button';
 import { Skeleton } from '@/shared/ui/skeleton';
 import { Badge } from '@/shared/ui/badge';
 import { Avatar, AvatarImage, AvatarFallback } from '@/shared/ui/avatar';
+import { ProtectedRoute } from '@/features/auth/components/RouteGuard';
 
 export default function ArticleDetailPage() {
   const { slug } = useParams();

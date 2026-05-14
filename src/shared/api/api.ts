@@ -26,8 +26,13 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Handle Token Expiration (401)
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // Handle Token Expiration (401), but not for login/refresh requests
+    if (
+      error.response?.status === 401 && 
+      !originalRequest._retry &&
+      !originalRequest.url?.includes('/auth/login') &&
+      !originalRequest.url?.includes('/auth/refresh')
+    ) {
       originalRequest._retry = true;
       try {
         const response = await axios.post(

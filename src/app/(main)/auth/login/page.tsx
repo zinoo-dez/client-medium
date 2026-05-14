@@ -18,7 +18,7 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const promise = login({ email, password });
+    const promise = login({ email: email.trim(), password });
 
     toast.promise(promise, {
       loading: 'Signing in...',

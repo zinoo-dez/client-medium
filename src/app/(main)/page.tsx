@@ -5,8 +5,16 @@ import { motion } from 'framer-motion';
 import { Button } from '@/shared/ui/button';
 import { TrendingUp, BookOpen, PenTool, Users } from 'lucide-react';
 import { ArticleFeed } from '@/features/article/components/ArticleFeed';
+import { useAuthStore } from '@/features/auth/store/useAuthStore';
+import { useEffect } from 'react';
 
 export default function LandingPage() {
+  const { user, isAuthenticated, checkAuth } = useAuthStore();
+  
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -34,10 +42,21 @@ export default function LandingPage() {
             <Link href="/our-story" className="text-sm font-medium hover:text-brand-primary transition-colors">Our Story</Link>
             <Link href="/membership" className="text-sm font-medium hover:text-brand-primary transition-colors">Membership</Link>
             <Link href="/write" className="text-sm font-medium hover:text-brand-primary transition-colors">Write</Link>
-            <Link href="/auth/login" className="text-sm font-medium hover:text-brand-primary transition-colors">Sign In</Link>
-            <Button asChild className="rounded-full bg-brand-primary hover:bg-brand-hover">
-              <Link href="/auth/register">Get Started</Link>
-            </Button>
+            {isAuthenticated && user ? (
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-bold text-zinc-900 border border-zinc-200 px-4 py-2 rounded-full">{user.username}</span>
+                {user.role === 'ADMIN' && (
+                  <Link href="/admin/dashboard" className="text-sm font-medium text-brand-primary hover:underline">Dashboard</Link>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link href="/auth/login" className="text-sm font-medium hover:text-brand-primary transition-colors">Sign In</Link>
+                <Button asChild className="rounded-full bg-brand-primary hover:bg-brand-hover text-white">
+                  <Link href="/auth/register">Get Started</Link>
+                </Button>
+              </>
+            )}
           </nav>
         </div>
       </header>

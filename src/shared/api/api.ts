@@ -46,9 +46,6 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         localStorage.removeItem('accessToken');
-        if (typeof window !== 'undefined') {
-          window.location.href = '/auth/login';
-        }
       }
     }
 
